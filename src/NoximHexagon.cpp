@@ -8,17 +8,71 @@
 
 #include "NoximHexagon.h"
 
+// tiles array
+static NoximHMTile *a[20][20][20];
+//#define OFFSET 10;
+static const int OFFSET = 10;
+static NoximHMTile* getTile(int x, int y, int z){
+    return a[x+OFFSET][y+OFFSET][z+OFFSET];
+}
+static void setTile(int x, int y, int z, NoximHMTile* tile){
+    a[x+OFFSET][y+OFFSET][z+OFFSET] = tile;
+}
 
-void NoximHexagon::buildHexagonTree(int meshSize)
+//NoximHexagon::NoximHexagon(unsigned short level, string name)
+//{
+//    setLevel(level);
+//    setName(name);
+//    n0 = NULL;
+//    n1 = NULL;
+//    n2 = NULL;
+//    n3 = NULL;
+//    n4 = NULL;
+//    n5 = NULL;
+//    creator = NULL;
+//    //guiManager = NoximGuiManager::getInstance();
+//    //initilizeTiles();
+//}
+
+NoximHexagon::NoximHexagon(unsigned short level, string name, NoximHexagon* creator, int x, int y, int z)
 {
-    unsigned short level = 1;
-    NoximHexagon* rootHexagon = new NoximHexagon(level, "Root");
+    setLevel(level);
+    setName(name);
+    n0 = NULL;
+    n1 = NULL;
+    n2 = NULL;
+    n3 = NULL;
+    n4 = NULL;
+    n5 = NULL;
+    setCreator(creator);
+    setCoord(x,y,z);
+
+    NoximHMCoord c=getCoord();
+    cout << "Hexagon: [" << toString() << "] created, central coordinate: " << "x:"<<c.x << " y:"<<c.y << " z:"<< c.z << endl;
+    createTiles();
+}
+
+
+NoximHexagon::~NoximHexagon() {}
+
+NoximHexagon* NoximHexagon::buildHexagonTree(int meshSize)
+{
+
+    const int length=20;
+    for(int i=0;i<length;i++)
+        for(int j=0;j<length;j++)
+            for(int k=0;k<length;k++)
+                a[i][j][k] = NULL;
 
     std::cout << "------------buildHexagonTree-------------: meshSize = " << meshSize << std::endl;
+    // root hexagon
+    unsigned short level = 1;
+    NoximHexagon* rootHexagon = new NoximHexagon(level, "Root", NULL, 0, 0, 0);
+
     // queue for level-order creation
     Queue queue = Queue_CreateQueue(100);
-    std::cout << "Queue for level order creation initilized" << std::endl;
-    std::cout << "Empty? " << Queue_IsEmpty(queue) << ", isFull? " << Queue_IsFull(queue) << std::endl;
+//    std::cout << "Queue for level order creation initilized" << std::endl;
+//    std::cout << "Empty? " << Queue_IsEmpty(queue) << ", isFull? " << Queue_IsFull(queue) << std::endl;
     Queue_Enqueue(rootHexagon, queue);
 
     // statistics
@@ -112,18 +166,79 @@ void NoximHexagon::buildHexagonTree(int meshSize)
     }
     count +=levelCount;
     std::cout << levelCount << " hexagons for level: " << currentLevel << " (total: " << count << ") created." << std::endl;
-
+    Queue_DisposeQueue(queue);
+    return rootHexagon;
 }
 
 NoximHexagon* NoximHexagon::createNeighbor(string name)
 {
-    NoximHexagon* n = new NoximHexagon(level + 1, name);
-    n->setCreator(this);
-    cout << "Neighbour: [" << n->toString() << "] created" << endl;
+    unsigned short nextLevel = level + 1;
+
+    // coordinate
+    NoximHMCoord currentCoord=this->getCoord();
+    int x,y,z;
+    x = currentCoord.x;
+    y = currentCoord.y;
+    z = currentCoord.z;
+
+    // create neighbour according to positioin
+    NoximHexagon* n;
+    if(name=="n0")
+        n = new NoximHexagon(nextLevel, name, this, x+1, y-1, z);
+    else if(name == "n1")
+        n = new NoximHexagon(nextLevel, name, this, x+1, y, z-1);
+    else if(name == "n2")
+        n = new NoximHexagon(nextLevel, name, this, x, y+1, z-1);
+    else if(name == "n3")
+        n = new NoximHexagon(nextLevel, name, this, x-1, y+1, z);
+    else if(name == "n4")
+        n = new NoximHexagon(nextLevel, name, this, x-1, y, z+1);
+    else if(name == "n5")
+        n = new NoximHexagon(nextLevel, name, this, x, y-1, z+1);
+
     //usleep(1000000);
     //guiManager->createHexagon(level);
     return n;
 }
+
+
+static NoximHMTile* fillTileIntoArray(int x, int y, int z)
+{
+    NoximHMTile* tile =  NULL;
+    tile = getTile(x,y,z);
+    if(tile == NULL)
+    {
+        char tile_name[20];
+        sprintf(tile_name, "Tile[%02d][%02d][%02d]", x, y, z);
+        tile = new NoximHMTile(tile_name);
+        tile->setCoord(x,y,z);
+        setTile(x,y,z,tile);
+        cout << "\t" << tile_name << " created"<< endl;
+    }else
+    {
+        cout << "\tTry to look for Tile: (" << x << ", " << y << ", " << z << ")" ;
+        NoximHMCoord* c=tile->coord;
+        cout <<", but Tile: (" << c->x << ", " << c->y << ", " << c->z << ") already exists" << endl;
+    }
+    return tile;
+}
+
+void NoximHexagon::createTiles()
+{
+    NoximHMCoord c = this->getCoord();
+    int x,y,z;
+    x = c.x;
+    y = c.y;
+    z = c.z;
+
+    pxTile = fillTileIntoArray(x+1,y,z);
+    mxTile = fillTileIntoArray(x,y+1,z+1);
+    pyTile = fillTileIntoArray(x,y+1,z);
+    myTile = fillTileIntoArray(x+1,y,z+1);
+    pzTile = fillTileIntoArray(x,y,z+1);
+    mzTile = fillTileIntoArray(x+1,y+1,z);
+}
+
 
 string NoximHexagon::toString()
 {
@@ -164,13 +279,11 @@ void NoximHexagon::setLevel(unsigned short level)
 {
     this->level = level;
 }
-
-
-NoximHexagon::NoximHexagon(const NoximHexagon& orig)
+void NoximHexagon::setCoord(int x, int y, int z)
 {
+    NoximHMCoord c;
+    c.x = x;
+    c.y = y;
+    c.z = z;
+    coord = c;
 }
-
-NoximHexagon::~NoximHexagon()
-{
-}
-

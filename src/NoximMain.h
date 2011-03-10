@@ -14,6 +14,8 @@
 #include <cassert>
 #include <systemc.h>
 #include <vector>
+#include <string>
+
 using namespace std;
 
 // Define the directions as numbers
@@ -26,12 +28,12 @@ using namespace std;
 
 // Honeycomb mesh directions
 #define DIRECTIONS_HM          6
-#define DIRECTION_P_X          0
-#define DIRECTION_M_X          1
-#define DIRECTION_P_Y          2
-#define DIRECTION_M_Y          3
-#define DIRECTION_P_Z          4
-#define DIRECTION_M_Z          5
+#define DIRECTION_PX           0
+#define DIRECTION_MX           1
+#define DIRECTION_PY           2
+#define DIRECTION_MY           3
+#define DIRECTION_PZ           4
+#define DIRECTION_MZ           5
 #define DIRECTION_HM_LOCAL     6
 
 // Generic not reserved resource
@@ -150,8 +152,23 @@ class NoximHMCoord {
     int z;
 
     inline bool operator ==(const NoximHMCoord & coord) const {
-	return (coord.x == x && coord.y == y && coord.z == z);
-}};
+        return (coord.x == x && coord.y == y && coord.z == z);
+	}
+//    char* toString(){
+//////        //ret += "x:"+x+" y:"+y+" z:"+z;
+//////        string strx("x:"+x);
+//////        //strx = strx + x;
+//////        string stry(" y:");
+//////        stry +=y;
+//////        string strz(" z:");
+//////        strz +=z;
+//////        return strx+stry+strz;
+//
+//        char buffer [20];
+//        int n=sprintf (buffer, "x:%d y:%d z:%d", x,y,z);
+//        return buffer;
+//    }
+};
 
 
 // NoximFlitType -- Flit type enumeration

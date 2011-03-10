@@ -10,10 +10,11 @@
 	<queue>
 	"NoximMain.h"
 
-1299716483 /home/nan/chen-work/noxim-3d-honeycomb/src/NoximMain.h
+1299773216 /home/nan/chen-work/noxim-3d-honeycomb/src/NoximMain.h
 	<cassert>
 	<systemc.h>
 	<vector>
+	<string>
 
 1298731532 /home/nan/dev/systemc-2.2.0/include/systemc.h
 	<cassert>
@@ -820,14 +821,15 @@
 1299451752 source:/home/nan/chen-work/noxim-3d-honeycomb/src/NoximGlobalTrafficTable.cpp
 	"NoximGlobalTrafficTable.h"
 
-1299714602 source:/home/nan/chen-work/noxim-3d-honeycomb/src/NoximHexagon.cpp
+1299790064 source:/home/nan/chen-work/noxim-3d-honeycomb/src/NoximHexagon.cpp
 	<unistd.h>
 	"NoximHexagon.h"
 
-1299710139 /home/nan/chen-work/noxim-3d-honeycomb/src/NoximHexagon.h
+1299793486 /home/nan/chen-work/noxim-3d-honeycomb/src/NoximHexagon.h
 	<stdlib.h>
 	<string>
-	"NoximTile.h"
+	"NoximHMNoC.h"
+	"NoximHMTile.h"
 	"queue.h"
 
 1299451752 source:/home/nan/chen-work/noxim-3d-honeycomb/src/NoximLocalRoutingTable.cpp
@@ -865,14 +867,31 @@
 
 1299700472 /home/nan/chen-work/c-data-structures-analysis/ds-lib/queue.h
 
-1299717280 /home/nan/chen-work/noxim-3d-honeycomb/src/NoximHMNoC.h
+1299780179 /home/nan/chen-work/noxim-3d-honeycomb/src/NoximHMNoC.h
 	<systemc.h>
 	"NoximHMTile.h"
+	"NoximHexagon.h"
 	"NoximGlobalRoutingTable.h"
 	"NoximGlobalTrafficTable.h"
 
-1299717205 /home/nan/chen-work/noxim-3d-honeycomb/src/NoximHMTile.h
+1299795844 /home/nan/chen-work/noxim-3d-honeycomb/src/NoximHMTile.h
 	<systemc.h>
-	"NoximRouter.h"
+	"NoximHMRouter.h"
 	"NoximProcessingElement.h"
+
+1299790122 source:/home/nan/chen-work/noxim-3d-honeycomb/src/NoximHMNoC.cpp
+	"NoximHMNoC.h"
+	"queue.h"
+
+1299782141 /home/nan/chen-work/noxim-3d-honeycomb/src/NoximHMRouter.h
+	<systemc.h>
+	"NoximMain.h"
+	"NoximBuffer.h"
+	"NoximStats.h"
+	"NoximGlobalRoutingTable.h"
+	"NoximLocalRoutingTable.h"
+	"NoximReservationTable.h"
+
+1299782103 source:/home/nan/chen-work/noxim-3d-honeycomb/src/NoximHMRouter.cpp
+	"NoximHMRouter.h"
 

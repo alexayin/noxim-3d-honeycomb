@@ -12,7 +12,7 @@
 #define __NOXIMHMTILE_H__
 
 #include <systemc.h>
-#include "NoximRouter.h"
+#include "NoximHMRouter.h"
 #include "NoximProcessingElement.h"
 
 using namespace std;
@@ -52,15 +52,28 @@ SC_MODULE(NoximHMTile)
     sc_signal <int> free_slots_neighbor_local;
 
     // Instances
-    NoximRouter *r;		                // Router instance
+    NoximHMRouter *r;		                // Router instance
     NoximProcessingElement *pe;	                // Processing Element instance
+
+    NoximHMCoord* coord;
+
+    void setCoord(int x, int y, int z)
+    {
+        coord->x=x;
+		coord->y=y;
+		coord->z=z;
+    }
 
     // Constructor
 
     SC_CTOR(NoximHMTile) {
 
+	coord = new NoximHMCoord;
+	coord->x=0;
+	coord->y=0;
+	coord->z=0;
 	// Router pin assignments
-	r = new NoximRouter("Router");
+	r = new NoximHMRouter("Router");
 	r->clock(clock);
 	r->reset(reset);
 	for (int i = 0; i < DIRECTIONS_HM; i++) {
@@ -108,6 +121,7 @@ SC_MODULE(NoximHMTile)
 	pe->free_slots_neighbor(free_slots_neighbor_local);
 
     }
+
 
 };
 

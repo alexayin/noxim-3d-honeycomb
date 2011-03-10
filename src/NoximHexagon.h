@@ -12,7 +12,8 @@
 
 #include <string>
 
-#include "NoximTile.h"
+#include "NoximHMNoC.h"
+#include "NoximHMTile.h"
 
 extern "C" {
 #include "queue.h"
@@ -27,39 +28,28 @@ class NoximHexagon {
 //typedef NoximHexagon ElementType;
 
 public:
-    NoximHexagon(unsigned short level, string name) {
-        setLevel(level);
-        setName(name);
-        n0 = NULL;
-        n1 = NULL;
-        n2 = NULL;
-        n3 = NULL;
-        n4 = NULL;
-        n5 = NULL;
-        creator = NULL;
-
-        //guiManager = NoximGuiManager::getInstance();
-        //initilizeTiles();
-    }
-    NoximHexagon(const NoximHexagon& orig);
+//    NoximHexagon(unsigned short level, string name);
+    NoximHexagon(unsigned short level, string name, NoximHexagon* creator, int x, int y, int z);
     virtual ~NoximHexagon();
 
-    void initilizeTiles() {
-        pxTile = createTile();
-        mxTile = createTile();
-        pyTile = createTile();
-        myTile = createTile();
-        pzTile = createTile();
-        mzTile = createTile();
-    }
+//    void initilizeTiles() {
+//        pxTile = createTile();
+//        mxTile = createTile();
+//        pyTile = createTile();
+//        myTile = createTile();
+//        pzTile = createTile();
+//        mzTile = createTile();
+//    }
 
-    NoximTile* createTile() {
-        return new NoximTile("title");
-    }
+//    NoximTile* createTile() {
+//        return new NoximTile("title");
+//    }
 
-    static void buildHexagonTree(int meshSize);
+    static NoximHexagon* buildHexagonTree(int meshSize);
 
     NoximHexagon* createNeighbor(string name);
+
+    void createTiles();
 
     string toString();
 
@@ -69,6 +59,8 @@ public:
     string getName() const;
     unsigned short getLevel() const;
     void setLevel(unsigned short level);
+    void setCoord(int x, int y, int z);
+    NoximHMCoord getCoord(){return coord;}
 
     // link to neighbors
     NoximHexagon* n0;
@@ -78,19 +70,25 @@ public:
     NoximHexagon* n4;
     NoximHexagon* n5;
 
+        // 3-dimensional tile array for 2D honeycomb mesh
+    //static NoximHMTile *a[20][20][20];
+
 private:
     unsigned short level;
     string name;
     // tiles as vertices
-    NoximTile* pxTile;
-    NoximTile* mxTile;
-    NoximTile* pyTile;
-    NoximTile* myTile;
-    NoximTile* pzTile;
-    NoximTile* mzTile;
+    NoximHMTile* pxTile;
+    NoximHMTile* mxTile;
+    NoximHMTile* pyTile;
+    NoximHMTile* myTile;
+    NoximHMTile* pzTile;
+    NoximHMTile* mzTile;
 
     // link to creator
     NoximHexagon* creator;
+
+    // coordinate
+    NoximHMCoord coord;
 
     // GUI
     //NoximGuiManager* guiManager;
