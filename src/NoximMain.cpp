@@ -9,7 +9,7 @@
  */
 
 #include "NoximMain.h"
-#include "NoximNoC.h"
+#include "NoximHMNoC.h"
 #include "NoximGlobalStats.h"
 #include "NoximCmdLineParser.h"
 using namespace std;
@@ -41,6 +41,8 @@ float NoximGlobalParams::dyad_threshold = DEFAULT_DYAD_THRESHOLD;
 unsigned int NoximGlobalParams::max_volume_to_be_drained = DEFAULT_MAX_VOLUME_TO_BE_DRAINED;
 vector <pair <int, double> > NoximGlobalParams::hotspots;
 
+// for honeycomb mesh
+int NoximGlobalParams::honeycomb_mesh_size = DEFAULT_HONEYCOMB_MESH_SIZE;
 //---------------------------------------------------------------------------
 
 int sc_main(int arg_num, char *arg_vet[])
@@ -49,8 +51,8 @@ int sc_main(int arg_num, char *arg_vet[])
     drained_volume = 0;
 
     // Handle command-line arguments
-    cout << endl << "\t\tNoxim - the NoC Simulator" << endl;
-    cout << "\t\t(C) University of Catania" << endl << endl;
+    cout << endl << "\t\tNoxim 3D honeycomb - the NoC Simulator" << endl;
+    cout << "\t\t(C) University of Catania, University of Turku" << endl << endl;
 
     parseCmdLine(arg_num, arg_vet);
 
@@ -59,7 +61,7 @@ int sc_main(int arg_num, char *arg_vet[])
     sc_signal <bool> reset;
 
     // NoC instance
-    NoximNoC *n = new NoximNoC("NoC");
+    NoximHMNoC *n = new NoximHMNoC("NoC");
     n->clock(clock);
     n->reset(reset);
 
@@ -70,6 +72,7 @@ int sc_main(int arg_num, char *arg_vet[])
 	sc_trace(tf, reset, "reset");
 	sc_trace(tf, clock, "clock");
 
+    /*
 	for (int i = 0; i < NoximGlobalParams::mesh_dim_x; i++) {
 	    for (int j = 0; j < NoximGlobalParams::mesh_dim_y; j++) {
 		char label[30];
@@ -133,6 +136,7 @@ int sc_main(int arg_num, char *arg_vet[])
 	    drained_total << endl;
 	cout << "\n Effective drained volume: " << drained_volume;
 #endif
+    */
     }
 
     return 0;

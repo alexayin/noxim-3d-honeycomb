@@ -9,8 +9,9 @@ SYSTEMC = /home/nan/dev/systemc-2.2.0
 #
 # That's all for you!!!
 
-INCDIR = -I. -I.. -I../src -I$(SYSTEMC)/include
-LIBDIR = -L. -L.. -L../src -L$(SYSTEMC)/lib-$(TARGET_ARCH)
+INCDIR = -I. -I.. -I../src -I$(SYSTEMC)/include -Ihome/nan/qtsdk-2010.05/qt/include 
+
+LIBDIR = -L. -L.. -L../src -L$(SYSTEMC)/lib-$(TARGET_ARCH) -Lhome/nan/qtsdk-2010.05/qt/lib
 
 #EXTRA_LIBS = -lpthread
 LIBS = -lsystemc -lm $(EXTRA_LIBS)
@@ -23,7 +24,7 @@ $(EXE): $(OBJS) $(SYSTEMC)/lib-$(TARGET_ARCH)/libsystemc.a
 	$(CC) $(CFLAGS) $(INCDIR) $(LIBDIR) -o $@ $(OBJS) $(LIBS) 2>&1 | c++filt
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(INCDIR) -c $<
+	$(CC) $(CFLAGS) $(INCDIR) -c -g $<
 
 clean:
 	rm -f $(OBJS) *~ $(EXE) core

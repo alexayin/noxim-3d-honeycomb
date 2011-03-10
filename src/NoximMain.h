@@ -24,6 +24,16 @@ using namespace std;
 #define DIRECTION_WEST         3
 #define DIRECTION_LOCAL        4
 
+// Honeycomb mesh directions
+#define DIRECTIONS_HM          6
+#define DIRECTION_P_X          0
+#define DIRECTION_M_X          1
+#define DIRECTION_P_Y          2
+#define DIRECTION_M_Y          3
+#define DIRECTION_P_Z          4
+#define DIRECTION_M_Z          5
+#define DIRECTION_HM_LOCAL     6
+
 // Generic not reserved resource
 #define NOT_RESERVED          -2
 
@@ -87,6 +97,8 @@ using namespace std;
 #define DEFAULT_DYAD_THRESHOLD                     0.6
 #define DEFAULT_MAX_VOLUME_TO_BE_DRAINED             0
 
+#define DEFAULT_HONEYCOMB_MESH_SIZE                  4
+
 // TODO by Fafa - this MUST be removed!!! Use only STL vectors instead!!!
 #define MAX_STATIC_DIM 20
 
@@ -114,6 +126,10 @@ struct NoximGlobalParams {
     static vector <pair <int, double> > hotspots;
     static float dyad_threshold;
     static unsigned int max_volume_to_be_drained;
+
+    // for honeycomb
+    static int honeycomb_mesh_size;
+
 };
 
 // NoximCoord -- XY coordinates type of the Tile inside the Mesh
@@ -125,6 +141,18 @@ class NoximCoord {
     inline bool operator ==(const NoximCoord & coord) const {
 	return (coord.x == x && coord.y == y);
 }};
+
+// NoximHMCoord -- XYZ coordinates type of the Tile inside the Honeycomb Mesh
+class NoximHMCoord {
+  public:
+    int x;			// X coordinate
+    int y;			// Y coordinate
+    int z;
+
+    inline bool operator ==(const NoximHMCoord & coord) const {
+	return (coord.x == x && coord.y == y && coord.z == z);
+}};
+
 
 // NoximFlitType -- Flit type enumeration
 enum NoximFlitType {
@@ -172,7 +200,7 @@ struct NoximRouteData {
 
 struct NoximChannelStatus {
     int free_slots;		// occupied buffer slots
-    bool available;		// 
+    bool available;		//
     inline bool operator ==(const NoximChannelStatus & bs) const {
 	return (free_slots == bs.free_slots && available == bs.available);
     };

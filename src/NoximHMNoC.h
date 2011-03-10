@@ -8,16 +8,16 @@
  * This file represents the top-level testbench
  */
 
-#ifndef __NOXIMNOC_H__
-#define __NOXIMNOC_H__
+#ifndef __NOXIMHMNOC_H__
+#define __NOXIMHMNOC_H__
 
 #include <systemc.h>
-#include "NoximTile.h"
+#include "NoximHMTile.h"
 #include "NoximGlobalRoutingTable.h"
 #include "NoximGlobalTrafficTable.h"
 using namespace std;
 
-SC_MODULE(NoximNoC)
+SC_MODULE(NoximHMNoC)
 {
 
     // I/O Ports
@@ -52,10 +52,10 @@ SC_MODULE(NoximNoC)
     sc_signal <NoximNoP_data> NoP_data_to_north[MAX_STATIC_DIM][MAX_STATIC_DIM];
 
     // Matrix of tiles
-    NoximTile *t[MAX_STATIC_DIM][MAX_STATIC_DIM];
+    NoximHMTile *t[MAX_STATIC_DIM][MAX_STATIC_DIM];
 
     // 3-dimensional tile array for 2D honeycomb mesh
-    NoximTile *ta[MAX_STATIC_DIM][MAX_STATIC_DIM][MAX_STATIC_DIM];
+    NoximHMTile *ta[MAX_STATIC_DIM][MAX_STATIC_DIM][MAX_STATIC_DIM];
 
     // Global tables
     NoximGlobalRoutingTable grtable;
@@ -79,7 +79,7 @@ SC_MODULE(NoximNoC)
 
     // Constructor
 
-    SC_CTOR(NoximNoC) {
+    SC_CTOR(NoximHMNoC) {
 
 	//---------- Mau experiment <start>
 	/*
@@ -89,21 +89,16 @@ SC_MODULE(NoximNoC)
 	 */
 	//---------- Mau experiment <stop>
 
-	// Build the Mesh
-	//buildMesh();
+        // Build the Mesh
         buildHoneycombMesh();
     }
 
     // Support methods
-    NoximTile *searchNode(const int id) const;
-
-    void buildHoneycombMesh();
+    NoximHMTile *searchNode(const int id) const;
 
   private:
+      void buildHoneycombMesh();
 
-    void buildMesh();
-
-    
 
 };
 

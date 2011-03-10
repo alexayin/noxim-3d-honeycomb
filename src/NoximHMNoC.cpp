@@ -8,12 +8,13 @@
  * This file contains the implementation of the Network-on-Chip
  */
 
-#include "NoximNoC.h"
+#include "NoximHMNoC.h"
 #include "NoximHexagon.h"
 
 using namespace std;
 
-void NoximNoC::buildMesh()
+/*
+void NoximHMNoC::buildMesh()
 {
     // Check for routing table availability
     if (NoximGlobalParams::routing_algorithm == ROUTING_TABLE_BASED)
@@ -153,8 +154,9 @@ void NoximNoC::buildMesh()
 	t[NoximGlobalParams::mesh_dim_x - 1][j]->r->reservation_table.invalidate(DIRECTION_EAST);
     }
 }
+*/
 
-NoximTile *NoximNoC::searchNode(const int id) const
+NoximHMTile *NoximHMNoC::searchNode(const int id) const
 {
     for (int i = 0; i < NoximGlobalParams::mesh_dim_x; i++)
 	for (int j = 0; j < NoximGlobalParams::mesh_dim_y; j++)
@@ -165,7 +167,7 @@ NoximTile *NoximNoC::searchNode(const int id) const
 }
 
 
-void NoximNoC::buildHoneycombMesh()
+void NoximHMNoC::buildHoneycombMesh()
 {
     cout << "buildHoneycombMesh()" <<endl;
     // Check for routing table availability
@@ -189,6 +191,7 @@ void NoximNoC::buildHoneycombMesh()
         tmp_NoP.channel_status_neighbor[i].available = false;
     }
 
+    /*
     // Clear signals for borderline nodes
     for (int i = 0; i <= NoximGlobalParams::mesh_dim_x; i++) {
 	req_to_south[i][0] = 0;
@@ -227,6 +230,7 @@ void NoximNoC::buildHoneycombMesh()
 	t[0][j]->r->reservation_table.invalidate(DIRECTION_WEST);
 	t[NoximGlobalParams::mesh_dim_x - 1][j]->r->reservation_table.invalidate(DIRECTION_EAST);
     }
+    */
 }
 
 

@@ -128,6 +128,10 @@ SC_MODULE(NoximRouter)
     vector < int >routingTableBased(const int dir_in,
 				    const NoximCoord & current,
 				    const NoximCoord & destination);
+
+    vector < int >routingMinusXPlusZFirst(const NoximHMCoord & current,
+            const NoximHMCoord & destination);
+
     NoximNoP_data getCurrentNoPData() const;
     void NoP_report() const;
     int NoPScore(const NoximNoP_data & nop_data, const vector <int> & nop_channels) const;

@@ -629,6 +629,27 @@ vector < int >NoximRouter::routingTableBased(const int dir_in,
     return admissibleOutputsSet2Vector(ao);
 }
 
+
+vector < int >NoximRouter::routingMinusXPlusZFirst(const NoximHMCoord & current,
+					    const NoximHMCoord & destination)
+{
+    vector < int >directions;
+
+    /*
+    if (destination.x <= current.x || destination.y == current.y)
+	return routingXY(current, destination);
+
+    if (destination.y < current.y) {
+	directions.push_back(DIRECTION_NORTH);
+	directions.push_back(DIRECTION_EAST);
+    } else {
+	directions.push_back(DIRECTION_SOUTH);
+	directions.push_back(DIRECTION_EAST);
+    }
+    */
+    return directions;
+}
+
 void NoximRouter::configure(const int _id,
 			    const double _warm_up_time,
 			    const unsigned int _max_buffer_size,

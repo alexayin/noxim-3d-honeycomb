@@ -252,6 +252,8 @@ void parseCmdLine(int arg_num, char *arg_vet[])
 		NoximGlobalParams::mesh_dim_x = atoi(arg_vet[++i]);
 	    else if (!strcmp(arg_vet[i], "-dimy"))
 		NoximGlobalParams::mesh_dim_y = atoi(arg_vet[++i]);
+		else if (!strcmp(arg_vet[i], "-hmsize"))
+		NoximGlobalParams::honeycomb_mesh_size = atoi(arg_vet[++i]);
 	    else if (!strcmp(arg_vet[i], "-buffer"))
 		NoximGlobalParams::buffer_depth = atoi(arg_vet[++i]);
 	    else if (!strcmp(arg_vet[i], "-size")) {
